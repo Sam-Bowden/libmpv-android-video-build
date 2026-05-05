@@ -44,7 +44,7 @@ pairs=("aarch64-linux-android" "arm-linux-androideabi" "i686-linux-android" "x86
 for i in "${!archs[@]}"; do
     arch=${archs[$i]}
     pair=${pairs[$i]}
-    cp ../../prefix/${arch}/usr/local/lib/{libsrt.so,libmbedcrypto.so,libmbedtls.so,libmbedx509.so} app/build/outputs/apk/release/lib/${arch}
+    cp ../../prefix/${arch}/usr/local/lib/{libsrt.so,libmbedcrypto.so,libmbedtls.so,libmbedx509.so,libmpv.so} app/build/outputs/apk/release/lib/${arch}
     cp ../../sdk/android-sdk-linux/ndk/$v_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/${pair}/libc++_shared.so app/build/outputs/apk/release/lib/${arch}
 done
 
