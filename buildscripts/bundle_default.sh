@@ -21,6 +21,14 @@ cp flavors/default.sh scripts/ffmpeg.sh
 
 ./build.sh
 
+zip -r debug-symbols-default.zip prefix/*/lib
+
+. ./include/depinfo.sh
+./sdk/android-sdk-linux/ndk/$v_ndk/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip --strip-all prefix/arm64-v8a/usr/local/lib/libmpv.so
+./sdk/android-sdk-linux/ndk/$v_ndk/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip --strip-all prefix/armeabi-v7a/usr/local/lib/libmpv.so
+./sdk/android-sdk-linux/ndk/$v_ndk/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip --strip-all prefix/x86/usr/local/lib/libmpv.so
+./sdk/android-sdk-linux/ndk/$v_ndk/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip --strip-all prefix/x86_64/usr/local/lib/libmpv.so
+
 # --------------------------------------------------
 
 cd deps/media-kit-android-helper
@@ -30,65 +38,26 @@ sudo chmod +x gradlew
 
 unzip -o app/build/outputs/apk/release/app-release.apk -d app/build/outputs/apk/release
 
-ln -sf "$(pwd)/app/build/outputs/apk/release/lib/arm64-v8a/libmediakitandroidhelper.so" "../../../libmpv/src/main/jniLibs/arm64-v8a"
-ln -sf "$(pwd)/app/build/outputs/apk/release/lib/armeabi-v7a/libmediakitandroidhelper.so" "../../../libmpv/src/main/jniLibs/armeabi-v7a"
-ln -sf "$(pwd)/app/build/outputs/apk/release/lib/x86/libmediakitandroidhelper.so" "../../../libmpv/src/main/jniLibs/x86"
-ln -sf "$(pwd)/app/build/outputs/apk/release/lib/x86_64/libmediakitandroidhelper.so" "../../../libmpv/src/main/jniLibs/x86_64"
-
-cd ../..
-
-# --------------------------------------------------
-
-cd deps/media_kit/media_kit_native_event_loop
-
-flutter create --org com.alexmercerind --template plugin_ffi --platforms=android .
-
-if ! grep -q android "pubspec.yaml"; then
-  printf "      android:\n        ffiPlugin: true\n" >> pubspec.yaml
-fi
-
-flutter pub get
-
-cp -a ../../mpv/libmpv/. src/include/
-
-cd example
-
-flutter clean
-flutter build apk --release
-
-unzip -o build/app/outputs/apk/release/app-release.apk -d build/app/outputs/apk/release
-
-cd build/app/outputs/apk/release/
-
-# --------------------------------------------------
-
-rm -r lib/*/libapp.so
-rm -r lib/*/libflutter.so
-
 archs=("arm64-v8a" "armeabi-v7a" "x86" "x86_64")
 pairs=("aarch64-linux-android" "arm-linux-androideabi" "i686-linux-android" "x86_64-linux-android")
 
 for i in "${!archs[@]}"; do
     arch=${archs[$i]}
     pair=${pairs[$i]}
-    cp ../../../../../../../../../prefix/${arch}/lib/{libsrt.so,libmbedcrypto.so,libmbedtls.so,libmbedx509.so} lib/${arch}
-    cp ../../../../../../../../../sdk/android-sdk-linux/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/${pair}/libc++_shared.so lib/${arch}
+    cp ../../prefix/${arch}/usr/local/lib/{libsrt.so,libmbedcrypto.so,libmbedtls.so,libmbedx509.so} app/build/outputs/apk/release/lib/${arch}
+    cp ../../sdk/android-sdk-linux/ndk/$v_ndk/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/${pair}/libc++_shared.so app/build/outputs/apk/release/lib/${arch}
 done
 
-zip -r "default-arm64-v8a.jar"                lib/arm64-v8a
-zip -r "default-armeabi-v7a.jar"              lib/armeabi-v7a
-zip -r "default-x86.jar"                      lib/x86
-zip -r "default-x86_64.jar"                   lib/x86_64
+cd app/build/outputs/apk/release
 
-mkdir -p ../../../../../../../../../../output
-
-cp *.jar ../../../../../../../../../../output
+zip -r default-arm64-v8a.jar      lib/arm64-v8a/*.so
+zip -r default-armeabi-v7a.jar    lib/armeabi-v7a/*.so
+zip -r default-x86.jar            lib/x86/*.so
+zip -r default-x86_64.jar         lib/x86_64/*.so
 
 md5sum *.jar
 
-cd ../../../../../../../../..
+cd ../../../../../../..
 
-# --------------------------------------------------
-
-zip -r debug-symbols-default.zip prefix/*/lib
-cp debug-symbols-default.zip ../output
+mkdir -p artifacts/default
+cp deps/media-kit-android-helper/app/build/outputs/apk/release/default-*.jar artifacts/default/

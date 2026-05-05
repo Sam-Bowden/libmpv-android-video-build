@@ -28,11 +28,7 @@ v_libsrt=1.5.3
 dep_mbedtls=()
 dep_dav1d=()
 dep_libvorbis=(libogg)
-if [ -n "$ENCODERS_GPL" ]; then
-	dep_ffmpeg=(mbedtls dav1d libxml2 libvorbis libvpx libx264)
-else
-	dep_ffmpeg=(mbedtls dav1d libxml2 libsrt)
-fi
+dep_ffmpeg=(mbedtls dav1d libxml2 libsrt)
 dep_freetype2=()
 dep_fribidi=()
 dep_harfbuzz=()
@@ -40,8 +36,4 @@ dep_libass=(freetype fribidi harfbuzz)
 dep_lua=()
 dep_libsrt=(mbedtls)
 dep_shaderc=()
-if [ -n "$ENCODERS_GPL" ]; then
-	dep_mpv=(ffmpeg libass fftools_ffi libplacebo)
-else
-	dep_mpv=(ffmpeg libass libplacebo)
-fi
+dep_mpv=(ffmpeg libass libplacebo)

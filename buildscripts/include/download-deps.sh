@@ -60,15 +60,15 @@ HEREDOC
 [ ! -d libplacebo ] && git clone --depth 1 --branch v$v_libplacebo --recursive https://code.videolan.org/videolan/libplacebo.git libplacebo
 
 # mpv
-[ ! -d mpv ] && git clone https://github.com/Samuel-Bowden/mpv.git mpv && cd mpv && git reset --hard ac556ca0a976c53dbabee54fd08394e4561bc493 && cd ..
+[ ! -d mpv ] && git clone https://github.com/Sam-Bowden/mpv.git mpv && cd mpv && git reset --hard ac556ca0a976c53dbabee54fd08394e4561bc493 && cd ..
 
 # fftools_ffi
 [ ! -d fftools_ffi ] && git clone --depth 1 --branch main https://github.com/moffatman/fftools-ffi.git fftools_ffi
 
 # media-kit-android-helper
-[ ! -d media-kit-android-helper ] && git clone --depth 1 --branch fix/no-dup-fd https://github.com/media-kit/media-kit-android-helper.git
+[ ! -d media-kit-android-helper ] && git clone --branch main https://github.com/media-kit/media-kit-android-helper.git && cd media-kit-android-helper && git reset --hard 42054e5d479f39ccbb0ae604862e2bcaf59b74c2 && cd ..
 
 # media_kit
-[ ! -d media_kit ] && git clone --depth 1 --single-branch --branch media_kit-v1.1.10 https://github.com/alexmercerind/media_kit.git
+[ ! -d media_kit ] && git clone --depth 1 --single-branch --branch main https://github.com/media-kit/media-kit.git
 
 cd ..
