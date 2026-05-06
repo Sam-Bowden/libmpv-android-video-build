@@ -16,9 +16,6 @@ v_dav1d=1.2.0
 v_libxml2=2.10.3
 v_ffmpeg=6.1.1
 v_mpv=ac556ca0a976c53dbabee54fd08394e4561bc493
-v_libogg=1.3.5
-v_libvorbis=1.3.7
-v_libvpx=1.13
 v_libsrt=1.5.3
 
 
@@ -27,7 +24,6 @@ v_libsrt=1.5.3
 
 dep_mbedtls=()
 dep_dav1d=()
-dep_libvorbis=(libogg)
 dep_ffmpeg=(mbedtls dav1d libxml2 libsrt)
 dep_freetype2=()
 dep_fribidi=()
