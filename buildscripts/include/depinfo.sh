@@ -16,7 +16,7 @@ v_dav1d=1.2.0
 v_libxml2=2.10.3
 v_ffmpeg=6.1.1
 v_mpv=ac556ca0a976c53dbabee54fd08394e4561bc493
-v_libsrt=1.5.3
+v_libsrt=1.5.6
 
 
 ## Dependency tree
